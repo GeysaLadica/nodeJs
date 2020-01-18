@@ -7,8 +7,8 @@ module.exports = {
 
         let dev = await Dev.findOne({github_username});
 
-        
-        const apiResponse = await axios.get(`https://api.github.com/users/${github_username}`); //entre crases
+        if(!dev){
+            const apiResponse = await axios.get(`https://api.github.com/users/${github_username}`); //entre crases
    
         const {name = login, avatar_url, bio} = apiResponse.data; // o "=" atribiu o valor padrão de login caso nome não exista
         const techsArray = techs.split(',').map(tech => tech.trim()); //map percorre, "=>" para cada tech remove espaçamentos
@@ -26,6 +26,8 @@ module.exports = {
                 techs: techsArray,
                 location,
             });
+        }
+        
         return response.json(dev);
     }
 }
